@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Item : MonoBehaviour
+public class Item
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public List<BaseStat> Stats { get; set; }
+    public string ObjectSlug { get; set; }
 
-    // Update is called once per frame
-    void Update()
+    public Item(List<BaseStat> _Stats, string _ObjectSlug)
     {
-        
+        this.Stats = _Stats;
+        this.ObjectSlug = _ObjectSlug;
     }
 }

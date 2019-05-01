@@ -4,15 +4,22 @@ using UnityEngine;
 
 public class InventoryController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public PlayerWeaponController playerWeaponController;
+    public Item sword;
+
+    private void Start()
     {
-        
+        playerWeaponController = GetComponent<PlayerWeaponController>();
+        List<BaseStat> meleeStats = new List<BaseStat>();
+        meleeStats.Add(new BaseStat(6, "Power", "Your power level."));
+        sword = new Item(meleeStats, "sword");
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.V))
+        {
+            playerWeaponController.EquipWeapon(sword);
+        }
     }
 }

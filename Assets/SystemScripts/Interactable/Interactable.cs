@@ -24,9 +24,9 @@ public class Interactable : MonoBehaviour
         Debug.Log("I am base Interaction.");
     }
 
-    private void Update()
+    void Update()
     {
-        if (!hasInteracted && playerAgent != null && playerAgent.pathPending)
+        if (!hasInteracted && playerAgent != null && !playerAgent.pathPending)
         {
             if (playerAgent.remainingDistance <= playerAgent.stoppingDistance)
             {
