@@ -7,6 +7,8 @@ public class ThirdPersonController : MonoBehaviour
 
     public float walkSpeed;
     public float runSpeed;
+    public float rotSpeed;
+    public float jumpSpeed;
 
     public bool canJump;
 
@@ -14,6 +16,8 @@ public class ThirdPersonController : MonoBehaviour
 
     public GameObject player;
     private Rigidbody rbody;
+
+    public GameObject playerMesh;
 
    
 
@@ -30,6 +34,7 @@ public class ThirdPersonController : MonoBehaviour
     {
 
         PlayerMovement();
+        PlayerJump();
     
     }
 
@@ -46,6 +51,8 @@ public class ThirdPersonController : MonoBehaviour
 
         Vector3 camRotation = player.transform.eulerAngles;
         Vector3 rotation = camPosition.transform.eulerAngles;
+
+        
 
         if (Input.GetKey(KeyCode.W))
         {
@@ -74,5 +81,41 @@ public class ThirdPersonController : MonoBehaviour
             player.transform.eulerAngles = new Vector3(camRotation.x, rotation.y, camRotation.z);
 
         }
+    }
+
+    public void PlayerJump()
+    {
+
+        Ray jumpRay = new Ray();
+
+        jumpRay.origin = playerMesh.transform.position;
+        jumpRay.direction = playerMesh.transform.up * -1.0f;
+
+        Debug.DrawLine(jumpRay.origin, jumpRay.origin + jumpRay.direction * 3.0f, Color.blue);
+
+        RaycastHit jumpRayhit;
+
+        if (Physics.Raycast(jumpRay, out jumpRayhit, 3.0f))
+        {
+
+            if (jumpRayhit.collider.tag == "Floor")
+            {
+                canJump = true;
+            }
+        }
+        else
+        {
+
+            canJump = false;
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) & canJump == true)
+        {
+
+            rbody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+
+        }
+
     }
 }

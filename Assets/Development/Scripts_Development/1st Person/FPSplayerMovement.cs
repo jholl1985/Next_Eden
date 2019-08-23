@@ -8,10 +8,12 @@ public class FPSplayerMovement : MonoBehaviour {
     public float walkSpeed;
     public float runSpeed;
     public float rotSpeed;
+    public float jumpSpeed;
 
     public bool canJump;
 
     public GameObject player;
+    public GameObject playerMesh;
 
     private Rigidbody rbody;
     
@@ -30,6 +32,7 @@ public class FPSplayerMovement : MonoBehaviour {
     {
 
         PlayerMovement();
+        PlayerJump();
 
     }
 
@@ -57,6 +60,42 @@ public class FPSplayerMovement : MonoBehaviour {
 
         //Player Rotation
         player.transform.Rotate(new Vector3(0, Input.GetAxis("Mouse X") * rotSpeed * Time.deltaTime, 0));
+
+    }
+
+    public void PlayerJump()
+    {
+
+        Ray jumpRay = new Ray();
+
+        jumpRay.origin = playerMesh.transform.position;
+        jumpRay.direction = playerMesh.transform.up * -1.0f;
+
+        Debug.DrawLine(jumpRay.origin, jumpRay.origin + jumpRay.direction * 3.0f, Color.blue);
+
+        RaycastHit jumpRayhit;
+
+        if (Physics.Raycast(jumpRay, out jumpRayhit, 3.0f))
+        {
+
+            if (jumpRayhit.collider.tag == "Floor")
+            {
+                canJump = true;
+            }
+        }
+        else
+        {
+
+            canJump = false;
+
+        }
+
+        if (Input.GetKeyDown(KeyCode.Space) && canJump == true)
+        {
+
+            rbody.AddForce(new Vector3(0, 10, 0), ForceMode.Impulse);
+
+        }
 
     }
 }
